@@ -11,10 +11,19 @@ require("./database/db");
 
 const app = express();
 
+// app.use(cors({
+//     origin: "http://localhost:5173",
+//     credentials: true
+// }));
+
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: [
+        "http://localhost:5173",
+        process.env.CLIENT_URL
+    ],
     credentials: true
 }));
+
 
 app.use(express.json());
 app.use("/api/chat", chatRoutes);
@@ -28,9 +37,20 @@ app.get("/", (req, res) => {
 const server = http.createServer(app);
 
 // Create Socket.IO Server
+// const io = new Server(server, {
+//     cors: {
+//         origin: "http://localhost:5173",
+//         methods: ["GET", "POST"],
+//         credentials: true
+//     }
+// });
+
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: [
+            "http://localhost:5173",
+            process.env.CLIENT_URL
+        ],
         methods: ["GET", "POST"],
         credentials: true
     }
